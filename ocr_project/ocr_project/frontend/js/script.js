@@ -1,23 +1,26 @@
+// Récupération du canvas
 var canvas = document.getElementById('canvas'), 
     ctx = canvas.getContext("2d"), 
+
+    // Création des paramètres pour les cellules
     rect = canvas.getBoundingClientRect();
     width = rect.right - rect.left, 
     height = rect.bottom - rect.top, 
     numCell = 20,
     cell = Math.floor(width/numCell),
-    arrayInt = new Array(20*20).fill(0);
 
+    // Création des variables à envoyer au backend
+    arrayInt = new Array(20*20).fill(0),
+    value = 0;
 
-var value = 0,
-    mode;
-
-function drawGrid(width, height){
-    
+function drawGrid(){
+        
     ctx.beginPath();
     ctx.fillStyle = "white";
     ctx.lineWidth = 2;
     ctx.strokeStyle = 'black';
     
+    // Parcours et traçage de chaque cellules
     for(var i = 0; i < numCell; i++){
         for(var j = 0; j < numCell; j++){
             
@@ -49,12 +52,16 @@ var i = 0,
     isDrawing = false;
 
 canvas.addEventListener('mousedown', e => {
+    // Contrôle que le click de la souris est dans le canvas
     if((e.clientX >= rect.left && e.clientX <= rect.right) && (e.clientY >= rect.top && e.clientY <= rect.bottom)){
+
+        // Calcul de la position dans le canvas (matrice)
         i = Math.floor((e.clientY/(rect.right + rect.left) * numCell) - 0.20);
         j = Math.floor((e.clientX/(rect.bottom + rect.top) * numCell) - 0.53);
 
         isDrawing = true;
         
+        // Dessin des élements dans le canvas
         canvas.addEventListener('mousemove', e => {
             if(isDrawing == true){
                 x = Math.floor(e.offsetX / cell) * cell;
@@ -69,6 +76,10 @@ canvas.addEventListener('mousedown', e => {
         });
     }
 });
+
+drawGrid();
+
+
 
 canvas.addEventListener('mouseup', e => {
     if(isDrawing == true){
@@ -86,60 +97,60 @@ document.getElementById("buttonRecognize").addEventListener("click", function() 
     clearGrid();
 })
 
-drawGrid(width, height);
 
-function argMax(array) {
-    return array.map((x, i) => [x, i]).reduce((r, a) => (a[0] > r[0] ? a : r))[1];
-  }
 
-//TODO: stocker dans un JSON
-/*
-async function sendToFit(){
-
+async function sendToTrain(){
+    
+    // Données à envoyer au serveur
     var payload = {
         value: value,
         tab: arrayInt
     }
-
-    var data = new FormData();
-    data.append("json", JSON.stringify(payload) );
-
-
-    await fetch("http://127.0.0.1:8000/items/", 
+    
+    // Manipulation des données à envoyer au serveur
+    await fetch("http://127.0.0.1:8000/train/", 
     {   
         method : "POST",
-        body : data,            
+        body: JSON.stringify(payload)
+        
     })
-    .then(function(response){ 
-        return response.json(); })
+    .then(function(res){ return res.json(); })
 }
-*/
-async function sendToGuess(){
 
+// Récupération de la valeur max d'une liste
+function argMax(array) {
+    return array.map((x, i) => [x, i]).reduce((r, a) => (a[0] > r[0] ? a : r))[1];
+}
+
+async function sendToGuess(){
+    
+    // Manipulation des données récupérées du serveur
     await fetch("http://127.0.0.1:8000/guess/", 
     {   
         method : "POST",
         body: JSON.stringify({"content": arrayInt})
-
+        
     })
     .then(async function(response){
+
+        // Récupération de la liste des prédictions
         response.json().then( result => {
-
+            
             var color = result.map(x => 'rgba(75,192,192,0.4)');
-
             color[argMax(result)] = 'red';
-
+            
+            // Créeation du graphe des prédictions
             new Chart(document.getElementById("output"), {
                 type: 'horizontalBar',
                 data: {
-                  labels: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
-                  datasets: [
-                    {
-                      label: "Prediction",
-                      backgroundColor: color,
-                      data: result
-                    }
-                  ]
+                    labels: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+                    datasets: [
+                        {
+                            label: "Prediction",
+                            backgroundColor: color,
+                            data: result
+                        }
+                    ]
                 },
                 options: {
                     xAxes: [{
@@ -161,18 +172,26 @@ async function sendToGuess(){
     })
 }
 
-async function sendToTrain(){
+
+//TODO: stocker dans un JSON 
+/*
+async function sendToFit(){
 
     var payload = {
         value: value,
         tab: arrayInt
     }
 
-    await fetch("http://127.0.0.1:8000/train/", 
+    var data = new FormData();
+    data.append("json", JSON.stringify(payload) );
+
+
+    await fetch("http://127.0.0.1:8000/items/", 
     {   
         method : "POST",
-        body: JSON.stringify(payload)
-
+        body : data,            
     })
-    .then(function(res){ return res.json(); })
+    .then(function(response){ 
+        return response.json(); })
 }
+*/

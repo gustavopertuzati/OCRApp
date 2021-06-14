@@ -16,26 +16,36 @@ def createModel():
 
 def trainModel(train_features, label_features):
 
+    # Vérification que le model existe
     try:
         model = tf.keras.Model.load_model("ocr_model.h5")
     except:
         model = createModel()
 
+    # Stockage de la valeur récupérée dans un numpy array de une colonne et dix lignes
     label = np.zeros(10).reshape((1, 10))
     label[0][label_features] = 1
+
+    # Stockage du canvas récupérée dans un numpy array de une colonne et 400 lignes
     train = np.reshape(train_features, (1, 400))
+
+    # Entraînement et sauvegarde du model
     model.fit(train, label, batch_size=1, epochs=2)
     model.save("ocr_model.h5")
 
 
 def guessModel(guess_features):
 
+    # Vérification que le model existe
     try:
         model = tf.keras.Model.load_model("ocr_model.h5")
     except:
         model = createModel()
+        model.save("ocr_model.h5")
 
+    # Stockage du canvas récupérée dans un numpy array de une colonne et 400 lignes
     guess = np.reshape(guess_features, (1, 400))
+
+    # Génération des prédictions pour l'entrée
     predict = model.predict(guess)[0, :]
-    model.save("ocr_model.h5")
     return predict
