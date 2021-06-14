@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <link rel=stylesheet type="text/css" href="css/style.css">-
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    </head>
+    <body>
+        <canvas id="canvas" width="600" height="600"></canvas>
+        <br></br>
+        <button id="buttonSend" onclick="getInputValue();">Send</button>        
+        <button id="buttonTrain">Train me!</button>
+        <button id="buttonRecognize">Let me recognize!</button>
+        <input type="text" placeholder="Enter value..." id="value"></input>
+        <p>Train: Enter a value between 0 and 9, draw it and click the "Train me!" button.</p>
+        <p>Guess: Draw a value between 0 and 9 and click the "Let me recognize!!" button.</p>
+        <div class="contain2">
+            <canvas id="output" width="600" height="600"></canvas>
+        </div>
+    </body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    <script type="text/javascript" src="js/script.js"></script>
+</html>

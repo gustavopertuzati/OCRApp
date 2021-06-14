@@ -1,0 +1,24 @@
+canvas {
+	border: 0.5px solid black;
+	background-size:auto;
+	position: relative;
+	z-index: 1;
+}
+
+button {
+	
+	z-index: 0;
+}
+
+.contain2 {
+    width: 600px;
+    height: 900px;
+    float: left;
+    overflow: auto;
+	display:block;
+
+}
+
+body {
+    margin:0;
+}
