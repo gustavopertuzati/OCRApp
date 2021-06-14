@@ -39,8 +39,8 @@ poetry run npm install && npm start
 
 Vous pouvez ensuite vous rendre à l'adresse http://127.0.0.1:3306/index.html et tester le programme.
 
-Il peut y a voir des erreurs de Cross-origin resource sharing sur certains moteurs de recherche (notamment Chrome et Firefox). Pour régler cela, il suffit d'installer une extension et de l'activer.\\
-Pour Chrome: https://chrome.google.com/webstore/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf\\
+Il peut y a voir des erreurs de Cross-origin resource sharing sur certains moteurs de recherche (notamment Chrome et Firefox). Pour régler cela, il suffit d'installer une extension et de l'activer.  
+Pour Chrome: https://chrome.google.com/webstore/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf  
 Pour Firefox: https://addons.mozilla.org/fr/firefox/addon/cors-everywhere/
 ### Auteur
 * Gustavo Pertuzati (gustavo.pertuzati@etu.hesge.ch)
